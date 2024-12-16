@@ -47,37 +47,47 @@ def zt(x,n):
     while len(x) < n: x = '0' + x;
     return x
 
-def warning(x: str,pre = None):
+def warning(x: str,pre = None, end = '\n'):
     p = ''
     if pre:
         p = '[' + '] ['.join(pre) + '] '
-    print(f'{bcolors.BOLD}{bcolors.WARNING}WARN{bcolors.ENDC}  {x}')
+    print(f'{bcolors.BOLD}{bcolors.WARNING}WARN{bcolors.ENDC} {p}{x}', end = end)
     return
 
-def error(x: str):
-    print(f'{bcolors.BOLD}{bcolors.FAIL}ERROR{bcolors.ENDC} {x}')
-    return
-
-def info(x: str,pre = None):
+def error(x: str, pre = None, end = '\n'):
     p = ''
     if pre:
         p = '[' + '] ['.join(pre) + '] '
-    print(f'{bcolors.BOLD}{bcolors.OKCYAN}INFO{bcolors.ENDC}  {p}{x}')
+    print(f'{bcolors.BOLD}{bcolors.FAIL}ERROR{bcolors.ENDC} {p}{x}', end = end)
     return
 
-def debug(x: str):
-    print(f'{bcolors.BOLD}{bcolors.OKGREEN}DEBUG{bcolors.ENDC} {x}')
+def info(x: str,pre = None, end = '\n'):
+    p = ''
+    if pre:
+        p = '[' + '] ['.join(pre) + '] '
+    print(f'{bcolors.BOLD}{bcolors.OKCYAN}INFO{bcolors.ENDC}  {p}{x}', end = end)
+    return
+
+def debug(x: str, pre = None, end = '\n'):
+    p = ''
+    if pre:
+        p = '[' + '] ['.join(pre) + '] '
+    print(f'{bcolors.BOLD}{bcolors.OKGREEN}DEBUG{bcolors.ENDC} {p}{x}', end = end)
     return
 
 def read_from_file(name: str) -> str:
-	return open(name,'r', encoding = 'UTF-8').read()
+	f = open(name,'r', encoding = 'UTF-8')
+	ans = f.read()
+	f.close()
+	return ans
 
 def write_to_file(name: str,x):
-	with open(name,'w') as f:
+	with open(name,'w', encoding = 'UTF-8') as f:
 		f.write(str(x))
+	f.close()
 	return
 
 def append_to_file(name: str,x):
-	with open(name,'a') as f:
+	with open(name,'a', encoding = 'UTF-8') as f:
 		f.write(str(x))
 	return
