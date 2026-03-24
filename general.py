@@ -47,32 +47,44 @@ def zt(x,n):
     while len(x) < n: x = '0' + x;
     return x
 
-def warning(x: str,pre = None, end = '\n'):
+def warning(*x,sep = ' ', pre = None, end = '\n'):
     p = ''
     if pre:
-        p = '[' + '] ['.join(pre) + '] '
-    print(f'{bcolors.BOLD}{bcolors.WARNING}WARN{bcolors.ENDC} {p}{x}', end = end)
+        if type(pre) == list:
+            p = '[' + '] ['.join(pre) + '] '
+        else:
+            p = f'[{pre}]'
+    print(f'{bcolors.BOLD}{bcolors.WARNING}WARN{bcolors.ENDC} {p}', *x, sep = sep, end = end)
     return
 
-def error(x: str, pre = None, end = '\n'):
+def error(*x, sep = ' ', pre = None, end = '\n'):
     p = ''
     if pre:
-        p = '[' + '] ['.join(pre) + '] '
-    print(f'{bcolors.BOLD}{bcolors.FAIL}ERROR{bcolors.ENDC} {p}{x}', end = end)
+        if type(pre) == list:
+            p = '[' + '] ['.join(pre) + '] '
+        else:
+            p = f'[{pre}]'
+    print(f'{bcolors.BOLD}{bcolors.FAIL}ERROR{bcolors.ENDC} {p}', *x, sep = sep, end = end)
     return
 
-def info(x: str,pre = None, end = '\n'):
+def info(*x,sep = ' ', pre = None, end = '\n'):
     p = ''
     if pre:
-        p = '[' + '] ['.join(pre) + '] '
-    print(f'{bcolors.BOLD}{bcolors.OKCYAN}INFO{bcolors.ENDC}  {p}{x}', end = end)
+        if type(pre) == list:
+            p = '[' + '] ['.join(pre) + '] '
+        else:
+            p = f'[{pre}]'
+    print(f'{bcolors.BOLD}{bcolors.OKCYAN}INFO{bcolors.ENDC}  {p}', *x, sep = sep, end = end)
     return
 
-def debug(x: str, pre = None, end = '\n'):
+def debug(*x, sep = ' ', pre = None, end = '\n'):
     p = ''
     if pre:
-        p = '[' + '] ['.join(pre) + '] '
-    print(f'{bcolors.BOLD}{bcolors.OKGREEN}DEBUG{bcolors.ENDC} {p}{x}', end = end)
+        if type(pre) == list:
+            p = '[' + '] ['.join(pre) + '] '
+        else:
+            p = f'[{pre}]'
+    print(f'{bcolors.BOLD}{bcolors.OKGREEN}DEBUG{bcolors.ENDC} {p}', *x, sep = sep, end = end)
     return
 
 def read_from_file(name: str) -> str:
