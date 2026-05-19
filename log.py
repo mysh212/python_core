@@ -5,13 +5,20 @@ from core.general import exist, mkdir, write_to_file, append_to_file
 from datetime import datetime
 import os, json
 
-def _log(name = None, _status = None, data = None, ot = {}, _file = None):
+pre = ['INFO ', 'DEBUG', 'WARN ', 'ERROR']
+
+def _log(name = None, _status = None, data = None, ot = {}, _file = None, rep: bool = False):
     if len(data) == 1: data = data[0];
     else: data = [*data];
     if len(ot) != 0 and data: ot['data'] = data;
     elif data: ot = data
 
     path = _file or os.getenv('LOG_PATH') or 'general.log'
+
+    if rep:
+        global pre
+        if _status in pre:
+            (core.general.info, core.general.debug, core.general.warning, core.general.error)[pre.index(_status)](f'[{name}] {ot}')
 
     try:
         date = datetime.strftime(datetime.now(), '%Y/%m/%d %H:%M:%S.%f')
@@ -47,17 +54,17 @@ class log:
     def __init__(self, name: str):
         self.path = f'{name}.log'
         
-    def info(self, name = None):
-        return lambda *data, **ot: _log(data = data, name = name, _status = 'INFO ', ot = ot, _file = self.path)
+    def info(self, name = None, rep = False):
+        return lambda *data, **ot: _log(data = data, name = name, _status = 'INFO ', ot = ot, _file = self.path, rep = rep)
 
-    def debug(self, name = None):
-        return lambda *data, **ot: _log(data = data, name = name, _status = 'DEBUG', ot = ot, _file = self.path)
+    def debug(self, name = None, rep = False):
+        return lambda *data, **ot: _log(data = data, name = name, _status = 'DEBUG', ot = ot, _file = self.path, rep = rep)
 
-    def warning(self, name = None):
-        return lambda *data, **ot: _log(data = data, name = name, _status = 'WARN ', ot = ot, _file = self.path)
+    def warning(self, name = None, rep = False):
+        return lambda *data, **ot: _log(data = data, name = name, _status = 'WARN ', ot = ot, _file = self.path, rep = rep)
 
-    def error(self, name = None):
-        return lambda *data, **ot: _log(data = data, name = name, _status = 'ERROR', ot = ot, _file = self.path)    
+    def error(self, name = None, rep = False):
+        return lambda *data, **ot: _log(data = data, name = name, _status = 'ERROR', ot = ot, _file = self.path, rep = rep)
 
 def info(name = None, filename = None):
     return lambda *data, **ot: _log(data = data, name = name, _status = 'INFO ', ot = ot, _file = filename)
