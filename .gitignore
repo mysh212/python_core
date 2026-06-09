@@ -15,3 +15,6 @@ wheels/
 
 t.*
 *.info
+
+data/
+log/

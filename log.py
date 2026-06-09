@@ -5,7 +5,7 @@ from core.general import exist, mkdir, write_to_file, append_to_file
 from datetime import datetime
 import os, json
 
-pre = ['INFO ', 'DEBUG', 'WARN ', 'ERROR']
+titles = ['INFO ', 'DEBUG', 'WARN ', 'ERROR']
 
 def _log(name = None, _status = None, data = None, ot = {}, _file = None, rep: bool = False):
     if len(data) == 1: data = data[0];
@@ -16,9 +16,9 @@ def _log(name = None, _status = None, data = None, ot = {}, _file = None, rep: b
     path = _file or os.getenv('LOG_PATH') or 'general.log'
 
     if rep:
-        global pre
-        if _status in pre:
-            (core.general.info, core.general.debug, core.general.warning, core.general.error)[pre.index(_status)](f'[{name}] {ot}')
+        global titles
+        if _status in titles:
+            (core.general.info, core.general.debug, core.general.warning, core.general.error)[titles.index(_status)](f'[{name}] {ot}')
 
     try:
         date = datetime.strftime(datetime.now(), '%Y/%m/%d %H:%M:%S.%f')
