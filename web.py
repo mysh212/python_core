@@ -6,7 +6,45 @@ import core.log as log
 from datetime import datetime
 from collections import defaultdict
 
+from typing import Any
+
 info = warning = lambda *x, **y: None
+
+# class switch:
+#     def __init__(self, x: bool = False):
+#         self.x = x
+
+#     def pull(self):
+#         self.x = True
+
+#     def push(self):
+#         self.x = False
+
+#     def __bool__(self):
+#         return self.x
+
+#     def __str__(self):
+#         return f'<A switch with value {self.x}>'
+
+class result:
+    def __init__(self, ans: bool, block: bool, block_types: bool, data = None):
+        self.ans = ans
+        self.block = block
+        self.block_types = block_types
+        self.data = data
+
+    def __bool__(self):
+        return self.ans
+
+    def __str__(self):
+        return f'<Response in core.web with result {self.ans} & {self.block}>'
+
+    def __iter__(self):
+        for i in self.data:
+            yield i
+        return
+
+# block = switch()
 
 def ok(data = None, custom: bool = False, **ot) -> dict:
     if len(ot) == 0:
@@ -66,10 +104,22 @@ class damper:
 
 damp = damper()
 
-def require(request, f: list, delay: int = 0, name: str = '') -> bool:
+def require(request, f: list, delay: int = 0, name: str = '', types: list[type] | None = None) -> bool:
     if not damp.access(request.remote_addr, name, delay):
-        return False
+        return result(False, True, False)
     for i in f:
         if i not in request.values:
-            return False
-    return [request.values[i] for i in f]
+            return result(False, False, False)
+    if types is not None:
+        assert(len(f) == len(types))
+        ans = []
+        for i, tp in zip(f, types):
+            if tp is Any:
+                ans.append(i)
+                continue
+            try:
+                ans.append(tp(request.values[i]))
+            except:
+                return result(False, False, True)
+        return ans
+    return result(True, False, False, [request.values[i] for i in f])
