@@ -104,7 +104,7 @@ class damper:
 
 damp = damper()
 
-def require(request, f: list, delay: int = 0, name: str = '', types: list[type] | None = None) -> bool:
+def require(request, f: list, delay: int = 0, name: str = '', types: list[type] | None = None) -> result:
     if not damp.access(request.remote_addr, name, delay):
         return result(False, True, False)
     for i in f:
